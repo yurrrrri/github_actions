@@ -4,10 +4,15 @@ on:
     branches:
       - main
 jobs:
-  hello1:
+  hi1:
     runs-on: ubuntu-latest
     steps:
       - name: sayHi
         run: echo "Hi"
       - name: sayMyName
         run: echo "${{ github.actor }}"
+  hello1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sayHello
+        run: echo "Hello"
