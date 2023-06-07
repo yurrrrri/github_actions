@@ -4,15 +4,25 @@ on:
     branches:
       - main
 jobs:
-  hi1:
+  hello1:
     runs-on: ubuntu-latest
     steps:
       - name: sayHi
         run: echo "Hi"
       - name: sayMyName
         run: echo "${{ github.actor }}"
-  hello1:
+  makeTagAndRelease:
     runs-on: ubuntu-latest
     steps:
-      - name: sayHello
-        run: echo "Hello"
+      - uses: actions/checkout@v3
+      - uses: mathieudutour/github-tag-action@v6.1
+        id: tag_version
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
